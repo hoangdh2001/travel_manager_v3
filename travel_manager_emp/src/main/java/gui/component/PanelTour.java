@@ -5,12 +5,23 @@
  */
 package gui.component;
 
+import dao.ChuyenDuLich_DAO;
+import dao.LoaiChuyenDi_DAO;
+import dao.impl.ChuyenDuLichImpl;
+import dao.impl.LoaiChuyenDiImpl;
+import model.ChuyenDuLich;
+import model.DongTour;
+import model.LoaiChuyenDi;
+import model.PhuongTien;
+import model.TrangThaiChuyenDi;
+import com.huyhoang.*;
+import com.huyhoang.swing.event.EventPagination;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
@@ -21,23 +32,8 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.List;
-
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
-
-import com.huyhoang.swing.panel.PanelShadow;
-import com.huyhoang.swing.slideshow.EventPagination;
-import com.huyhoang.swing.textfield.MyTextField;
-
-import dao.ChuyenDuLich_DAO;
-import dao.LoaiChuyenDi_DAO;
-import dao.impl.ChuyenDuLichImpl;
-import dao.impl.LoaiChuyenDiImpl;
-import model.ChuyenDuLich;
-import model.DongTour;
-import model.LoaiChuyenDi;
-import model.PhuongTien;
-import model.TrangThaiChuyenDi;
 
 /**
  *
@@ -56,7 +52,7 @@ public class PanelTour extends javax.swing.JPanel {
     private DefaultComboBoxModel<TrangThaiChuyenDi> cmbTrangThaiModel = new DefaultComboBoxModel<>();
     private boolean trangThaiTimKiem = false;
 
-    public PanelTour() throws RemoteException, MalformedURLException, NotBoundException {
+    public PanelTour() throws MalformedURLException, RemoteException, NotBoundException {
         initComponents();
         setPropertiesForm();
         setSizeColumn();
@@ -64,11 +60,24 @@ public class PanelTour extends javax.swing.JPanel {
         chuyenDuLichImpl = (ChuyenDuLich_DAO) Naming.lookup("rmi://localhost:1099/chuyendulich_dao"); 
         loaiChuyenDiImpl = (LoaiChuyenDi_DAO) Naming.lookup("rmi://localhost:1099/loaiChuyenDi_DAO");
 
-        loadDataForm();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+					loadDataForm();
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            }
+        }).start();
+
         tblTourHandle();
+
         searchHandle();
 
         loadDataTable(pnlPage2.getCurrentIndex()); //load trang đầu tiên
+
         System.out.println("trang dau tien" + pnlPage2.getCurrentIndex());
 
     }
@@ -95,6 +104,9 @@ public class PanelTour extends javax.swing.JPanel {
         jdcNgayTao.setToolTipText("Ngày tạo");
         jdcNgayTao.setDateFormatString("dd-MM-yyyy");
 
+        btnLamMoi.setBackground(colorBtn);
+        btnThem.setBackground(colorBtn);
+
     }
 
     private void setSizeColumn() {
@@ -113,7 +125,6 @@ public class PanelTour extends javax.swing.JPanel {
         TrangThaiChuyenDi[] trangThais = TrangThaiChuyenDi.values();
 
         for (TrangThaiChuyenDi i : trangThais) {
-//            cmbTrangThaiModel.addElement(i);
             cmbTrangThai.addItem(i.getTrangThai());
         }
 
@@ -122,13 +133,15 @@ public class PanelTour extends javax.swing.JPanel {
             cmbPhuongTien.addItem(i.getPhuongTien());
         }
     }
-
+    
+    /**
+     * Lắng nghe các sự kiện tìm kiếm trên form
+     */
     private void searchHandle() {
 
         txtTimKiem.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-
                 try {
 					loadPage();
 				} catch (RemoteException e1) {
@@ -140,48 +153,45 @@ public class PanelTour extends javax.swing.JPanel {
             }
         });
 
-        cmbLoaiChuyenDi.addItemListener(new ItemListener() {
+        cmbLoaiChuyenDi.addActionListener(new ActionListener() {
             @Override
-            public void itemStateChanged(ItemEvent e) {
-
+            public void actionPerformed(ActionEvent e) {
                 try {
 					loadPage();
 				} catch (RemoteException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-
+                System.out.println(".actionPerformed() combox");
                 loadDataTable(pnlPage2.getCurrentIndex());
             }
         });
-
-        cmbTrangThai.addItemListener(new ItemListener() {
+        cmbTrangThai.addActionListener(new ActionListener() {
             @Override
-            public void itemStateChanged(ItemEvent e) {
+            public void actionPerformed(ActionEvent e) {
                 try {
 					loadPage();
 				} catch (RemoteException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-
                 loadDataTable(pnlPage2.getCurrentIndex());
             }
         });
-        cmbPhuongTien.addItemListener(new ItemListener() {
+        cmbPhuongTien.addActionListener(new ActionListener() {
             @Override
-            public void itemStateChanged(ItemEvent e) {
+            public void actionPerformed(ActionEvent e) {
                 try {
 					loadPage();
 				} catch (RemoteException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-
                 loadDataTable(pnlPage2.getCurrentIndex());
             }
         });
 
+//
         jdcBatDau.addPropertyChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
@@ -223,6 +233,13 @@ public class PanelTour extends javax.swing.JPanel {
             }
         });
 
+        btnLamMoi.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                clearForm();
+            }
+        });
+
     }
 
     public void btnThemHandle(ActionListener actionListener) {
@@ -230,7 +247,7 @@ public class PanelTour extends javax.swing.JPanel {
     }
 
     private void loadDataTable(int numPage) {
-        ((DefaultTableModel) tblTour.getModel()).setRowCount(0);
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -263,12 +280,12 @@ public class PanelTour extends javax.swing.JPanel {
 					e.printStackTrace();
 				}
                 if (listRow != null) {
-
+                    ((DefaultTableModel) tblTour.getModel()).setRowCount(0);
                     listRow.forEach(i -> {
                         tblTour.addRow(new ChuyenDuLich(i.getMaChuyen(), i.getGiaChuyenDi(),
                                 i.getLoaiChuyenDi(), i.getNgayTao(), i.getNgayKetThuc(),
                                 i.getNgayKhoiHanh(), i.getTrangThai(), i.getPhuongTien(),
-                                DongTour.GIA_TOT, i.getMoTa(), i.getSoLuong(), i.getNhanVien(), i.getNoiKhoiHanh()).convertToRowTable());
+                                i.getDongTour(), i.getMoTa(), i.getSoLuong(), i.getNhanVien(), i.getNoiKhoiHanh()).convertToRowTable());
                     });
                     tblTour.repaint();
                     tblTour.revalidate();
@@ -299,14 +316,8 @@ public class PanelTour extends javax.swing.JPanel {
             ngayTao = df.format(jdcNgayTao.getDate());
         }
 
-        int row = 0;
-		try {
-			row = chuyenDuLichImpl.soLuongSearch(textSearch, cmbLoaiChuyenDiModel.getElementAt(cmbLoaiChuyenDi.getSelectedIndex()),
-			        trangThai, phuongTien, ngayBatDau, ngayKetThuc, ngayTao);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        int row = chuyenDuLichImpl.soLuongSearch(textSearch, cmbLoaiChuyenDiModel.getElementAt(cmbLoaiChuyenDi.getSelectedIndex()),
+                trangThai, phuongTien, ngayBatDau, ngayKetThuc, ngayTao);
         System.out.println("row " + row);
 //        System.out.println(0 % 20);
         System.out.println(0 / 20);
@@ -333,6 +344,17 @@ public class PanelTour extends javax.swing.JPanel {
         loadPage();
     }
 
+    private void clearForm() {
+
+        txtTimKiem.setText("");
+        cmbLoaiChuyenDi.setSelectedItem(null);
+        cmbTrangThai.setSelectedIndex(0);
+        cmbPhuongTien.setSelectedIndex(0);
+        jdcBatDau.setDate(null);
+        jdcKetThuc.setDate(null);
+        jdcNgayTao.setDate(null);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -342,9 +364,8 @@ public class PanelTour extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnlTop = new PanelShadow();
-        btnThem = new javax.swing.JButton();
-        txtTimKiem = new MyTextField();
+        pnlTop = new com.huyhoang.swing.panel.PanelShadow();
+        txtTimKiem = new com.huyhoang.swing.textfield.MyTextField();
         cmbLoaiChuyenDi = new javax.swing.JComboBox<>(cmbLoaiChuyenDiModel);
         cmbTrangThai = new javax.swing.JComboBox<>();
         cmbPhuongTien = new javax.swing.JComboBox<>();
@@ -354,8 +375,9 @@ public class PanelTour extends javax.swing.JPanel {
         jdcKetThuc = new com.toedter.calendar.JDateChooser();
         jLabel1 = new javax.swing.JLabel();
         jdcNgayTao = new com.toedter.calendar.JDateChooser();
-        jButton1 = new javax.swing.JButton();
-        pnlCenter = new PanelShadow();
+        btnThem = new javax.swing.JButton();
+        btnLamMoi = new javax.swing.JButton();
+        pnlCenter = new com.huyhoang.swing.panel.PanelShadow();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblTour = new gui.table2.MyTable();
         pnlPage2 = new gui.table2.PanelPage();
@@ -363,15 +385,6 @@ public class PanelTour extends javax.swing.JPanel {
         setBackground(new java.awt.Color(255, 255, 255));
 
         pnlTop.setBackground(new java.awt.Color(255, 255, 255));
-
-        btnThem.setBackground(new java.awt.Color(204, 255, 204));
-        btnThem.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        btnThem.setText("Thêm");
-        btnThem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnThemActionPerformed(evt);
-            }
-        });
 
         txtTimKiem.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         txtTimKiem.setPreferredSize(new java.awt.Dimension(150, 39));
@@ -409,8 +422,17 @@ public class PanelTour extends javax.swing.JPanel {
 
         jdcNgayTao.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
 
-        jButton1.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        jButton1.setText("Làm mới");
+        btnThem.setBackground(new java.awt.Color(204, 255, 204));
+        btnThem.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        btnThem.setText("Thêm");
+        btnThem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThemActionPerformed(evt);
+            }
+        });
+
+        btnLamMoi.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        btnLamMoi.setText("Làm mới");
 
         javax.swing.GroupLayout pnlTopLayout = new javax.swing.GroupLayout(pnlTop);
         pnlTop.setLayout(pnlTopLayout);
@@ -441,7 +463,7 @@ public class PanelTour extends javax.swing.JPanel {
                     .addComponent(jdcNgayTao, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(pnlTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1)
+                    .addComponent(btnLamMoi)
                     .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30))
         );
@@ -452,7 +474,7 @@ public class PanelTour extends javax.swing.JPanel {
                 .addGroup(pnlTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(pnlTopLayout.createSequentialGroup()
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnLamMoi, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(pnlTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(pnlTopLayout.createSequentialGroup()
                                     .addGap(18, 18, 18)
@@ -559,11 +581,11 @@ public class PanelTour extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnLamMoi;
     private javax.swing.JButton btnThem;
     private javax.swing.JComboBox cmbLoaiChuyenDi;
     private javax.swing.JComboBox<String> cmbPhuongTien;
     private javax.swing.JComboBox<String> cmbTrangThai;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -571,10 +593,10 @@ public class PanelTour extends javax.swing.JPanel {
     private com.toedter.calendar.JDateChooser jdcBatDau;
     private com.toedter.calendar.JDateChooser jdcKetThuc;
     private com.toedter.calendar.JDateChooser jdcNgayTao;
-    private PanelShadow pnlCenter;
+    private com.huyhoang.swing.panel.PanelShadow pnlCenter;
     private gui.table2.PanelPage pnlPage2;
-    private PanelShadow pnlTop;
+    private com.huyhoang.swing.panel.PanelShadow pnlTop;
     private gui.table2.MyTable tblTour;
-    private MyTextField txtTimKiem;
+    private com.huyhoang.swing.textfield.MyTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
 }

@@ -216,6 +216,12 @@ public class KhachHang implements Serializable {
                 + soDienThoai + ", email=" + email + ", diaChi=" + diaChi + ", matKhau=" + Arrays.toString(matKhau)
                 + "]";
     }
+    
+    //nh
+    public Object[] convertToRowTable() {
+        String diaChiString = diaChi.getPhuongXa() + ", " + diaChi.getQuanHuyen() + ", " + diaChi.getTinhThanh();
+        return new Object[]{maKhachHang, hoTen, soDienThoai, email, cCCD, diaChiString};
+    }
 
     @Override
     public int hashCode() {

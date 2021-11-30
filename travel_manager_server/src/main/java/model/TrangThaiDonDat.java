@@ -18,6 +18,17 @@ public enum TrangThaiDonDat implements Serializable {
         this.trangThai = trangThai;
         this.mauTrangThai = mauTrangThai;
     }
+    
+    //nh
+    public static TrangThaiDonDat getValueTrangThaiDonDat(String trangThai) {
+        for (TrangThaiDonDat i : TrangThaiDonDat.values()) {
+            if (i.trangThai.equals(trangThai)) {
+                return i;
+            }
+        }
+
+        return null;
+    }
 
     /**
      * @return the trangThai

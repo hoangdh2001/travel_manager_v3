@@ -1,5 +1,6 @@
 package com.huyhoang.swing.slideshow;
 
+import com.huyhoang.swing.event.EventPagination;
 import com.huyhoang.swing.image.PictureBox;
 import com.huyhoang.swing.panel.PanelTransparent;
 import java.awt.CardLayout;

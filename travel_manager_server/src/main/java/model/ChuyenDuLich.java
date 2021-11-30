@@ -335,7 +335,7 @@ public class ChuyenDuLich implements Serializable {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         DecimalFormat df2 = new DecimalFormat("###,###,###");
         return new Object[]{maChuyen, sdf.format(ngayKhoiHanh), sdf.format(ngayKetThuc), soLuong,
-            loaiChuyenDi.getTenLoaiChuyen(), dongTour, phuongTien.getPhuongTien(), df2.format(giaChuyenDi), trangThai,
+            loaiChuyenDi.getTenLoaiChuyen(), dongTour.getDongTour(), phuongTien.getPhuongTien(), df2.format(giaChuyenDi), trangThai,
             sdf.format(ngayTao)};
     }
 

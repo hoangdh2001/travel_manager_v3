@@ -11,6 +11,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.border.EmptyBorder;
+
+import com.huyhoang.swing.event.EventPagination;
+
 import net.miginfocom.swing.MigLayout;
 
 public class Pagination extends JComponent {

@@ -253,19 +253,32 @@ public class ChuyenDuLichImpl extends UnicastRemoteObject implements ChuyenDuLic
 
         if (!ngayBD.equals("")) {
             queryNgayThangNam += " ngaykhoihanh = '" + ngayBD + "'  ";
-        } else {
-            queryNgayThangNam += " ngaykhoihanh like '%%' ";
         }
 
         if (!ngayKT.equals("")) {
-            queryNgayThangNam += "  or ngayketthuc = '" + ngayKT + "'  ";
+            if (queryNgayThangNam.equals(" and ( ")) {
+               queryNgayThangNam += "   ngayketthuc = '" + ngayKT + "'  ";
+            } else {
+               queryNgayThangNam += "  or ngayketthuc = '" + ngayKT + "'  ";
+            }
+            
+            
         }
 
         if (!ngayTao.equals("")) {
-            queryNgayThangNam += "  or ngay_tao = '" + ngayTao + "'  ";
+            if (queryNgayThangNam.equals(" and ( ")) {
+                queryNgayThangNam += "   ngay_tao = '" + ngayTao + "'  ";
+            } else {
+                queryNgayThangNam += "  or ngay_tao = '" + ngayTao + "'  ";
+            }
         }
 
-        queryNgayThangNam += " ) ";
+        if (queryNgayThangNam.equals(" and ( ")) {
+            queryNgayThangNam = " ";
+        } else {
+            queryNgayThangNam += " ) ";
+
+        }
 
         int soLuong = numPage * 20;
         System.out.println("offset DAO: " + soLuong);
@@ -337,7 +350,7 @@ public class ChuyenDuLichImpl extends UnicastRemoteObject implements ChuyenDuLic
 
     @Override
     public ChuyenDuLich getLastChuyenDuLich() {
-    Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.getTransaction();
 
         try {

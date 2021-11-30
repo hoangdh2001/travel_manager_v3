@@ -13,6 +13,8 @@ import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
 
+import com.huyhoang.swing.event.EventPagination;
+
 public class SlideShow extends JLayeredPane {
 
     private final JPanel panel;

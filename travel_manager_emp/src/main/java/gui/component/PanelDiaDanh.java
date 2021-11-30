@@ -5,24 +5,25 @@
  */
 package gui.component;
 
+import dao.DiaChi_DAO;
+import dao.DiaDanh_Dao;
+import model.DiaDanh;
+import com.huyhoang.*;
+import com.huyhoang.swing.event.EventPagination;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.List;
-
 import javax.swing.table.DefaultTableModel;
-
-import com.huyhoang.swing.panel.PanelShadow;
-import com.huyhoang.swing.slideshow.EventPagination;
-import com.huyhoang.swing.textfield.MyTextField;
-
-import dao.DiaDanh_Dao;
-import dao.impl.DiaDanhImpl;
-import model.DiaDanh;
 
 /**
  *
@@ -31,13 +32,21 @@ import model.DiaDanh;
 public class PanelDiaDanh extends javax.swing.JPanel {
 
     private DiaDanh_Dao diaDanhImpl;
-    private List<DiaDanh> listDiaDanh;
-    public PanelDiaDanh() throws RemoteException, MalformedURLException, NotBoundException {
+    public PanelDiaDanh() throws MalformedURLException, RemoteException, NotBoundException {
         initComponents();
         setPropertiesForm();
         diaDanhImpl = (DiaDanh_Dao) Naming.lookup("rmi://localhost:1099/diaDanh_Dao");
-        tblDiaDanhHandle();
-        loadData(pnlPage.getCurrentIndex());
+        
+        diaDanhImpl.getTinhThanhDiaDanhs().forEach(i -> {
+            cmbTinhThanhPho.addItem(i);
+        });
+        
+        
+        
+        tblDiaDanhgHandle();
+        
+        searchHandle();
+        loadDataTable(pnlPage.getCurrentIndex());
     }
     
     private void setPropertiesForm() {
@@ -50,29 +59,69 @@ public class PanelDiaDanh extends javax.swing.JPanel {
         
         txtTimKiem.setBorderLine(true);
         txtTimKiem.setBorderRadius(txtRadius);
+        
+        cmbTinhThanhPho.addItem("");
+        
+        btnThem.setBackground(colorBtn);
 
-        cmbChonCot.addItem("Tên địa danh");
-        cmbChonCot.addItem("Mã địa danh");
                 
     }
     
-    private void loadData(int numPage) {
-        ((DefaultTableModel) tblDiaDanh.getModel()).setRowCount(0);
+    private void searchHandle() {
 
+        txtTimKiem.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                try {
+					loadPage();
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+                loadDataTable(pnlPage.getCurrentIndex());
+            }
+        });
+        
+        cmbTinhThanhPho.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+
+                try {
+					loadPage();
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+                ((DefaultTableModel) tblDiaDanh.getModel()).setRowCount(0);
+                loadDataTable(pnlPage.getCurrentIndex());
+            }
+        });
+
+    }
+    
+     private void loadDataTable(int numPage) {
+        
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-					listDiaDanh = diaDanhImpl.getDiaDanh(numPage);
+                String textSearch = txtTimKiem.getText().trim();
+
+                List<DiaDanh> list = null;
+				try {
+					list = diaDanhImpl.searchDiaDanhs(textSearch, cmbTinhThanhPho.getSelectedItem().toString(), numPage);
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
-                if (listDiaDanh != null) {
-                    listDiaDanh.forEach(i -> {
+               
+                if (list != null) {
+                    ((DefaultTableModel) tblDiaDanh.getModel()).setRowCount(0);
+                    list.forEach(i -> {
+                        System.out.println(i);
                         tblDiaDanh.addRow(new DiaDanh(i.getMaDiaDanh(), i.getTenDiaDanh(),
                                 i.getTinh()).convertToRowTable());
+
                     });
 
                     tblDiaDanh.repaint();
@@ -80,17 +129,27 @@ public class PanelDiaDanh extends javax.swing.JPanel {
                 }
             }
         }).start();
+
     }
 
-    private void tblDiaDanhHandle() throws RemoteException {
+   private void loadPage() throws RemoteException {
+        int row = diaDanhImpl.getSoLuongSearch(txtTimKiem.getText().trim(), cmbTinhThanhPho.getSelectedItem().toString());
+        int x = row % 20 == 0 ? row / 20 : (row / 20) + 1;
+        if (x == 0) {
+            x = 1;
+        }
+        pnlPage.init(x);
+    }
+
+    private void tblDiaDanhgHandle() throws RemoteException {
         pnlPage.addEventPagination(new EventPagination() {
             @Override
             public void onClick(int pageClick) {
-                loadData(pageClick);
+                loadDataTable(pageClick);
             }
         });
-        int soLuongPhong = diaDanhImpl.getSoLuongDiaDanh();
-        pnlPage.init(soLuongPhong % 20 == 0 ? soLuongPhong / 20 : (soLuongPhong / 20) + 1);
+
+        loadPage();
     }
     
     
@@ -104,12 +163,11 @@ public class PanelDiaDanh extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnlTop = new PanelShadow();
-        txtTimKiem = new MyTextField();
-        cmbChonCot = new javax.swing.JComboBox<>();
+        pnlTop = new com.huyhoang.swing.panel.PanelShadow();
+        txtTimKiem = new com.huyhoang.swing.textfield.MyTextField();
         cmbTinhThanhPho = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
-        pnlCenter = new PanelShadow();
+        btnThem = new javax.swing.JButton();
+        pnlCenter = new com.huyhoang.swing.panel.PanelShadow();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDiaDanh = new gui.table2.MyTable();
         pnlPage = new gui.table2.PanelPage();
@@ -118,41 +176,30 @@ public class PanelDiaDanh extends javax.swing.JPanel {
 
         pnlTop.setBackground(new java.awt.Color(255, 255, 255));
 
-        txtTimKiem.setText("Tìm kiếm");
         txtTimKiem.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
 
-        cmbChonCot.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        cmbChonCot.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbChonCotActionPerformed(evt);
-            }
-        });
-
         cmbTinhThanhPho.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        cmbTinhThanhPho.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Chọn tỉnh" }));
         cmbTinhThanhPho.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbTinhThanhPhoActionPerformed(evt);
             }
         });
 
-        jButton1.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        jButton1.setText("Thêm");
+        btnThem.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        btnThem.setText("Thêm");
 
         javax.swing.GroupLayout pnlTopLayout = new javax.swing.GroupLayout(pnlTop);
         pnlTop.setLayout(pnlTopLayout);
         pnlTopLayout.setHorizontalGroup(
             pnlTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlTopLayout.createSequentialGroup()
-                .addGap(137, 137, 137)
+                .addGap(248, 248, 248)
                 .addComponent(txtTimKiem, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
-                .addGap(30, 30, 30)
-                .addComponent(cmbChonCot, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(cmbTinhThanhPho, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton1)
-                .addGap(168, 168, 168))
+                .addGap(46, 46, 46)
+                .addComponent(btnThem)
+                .addGap(231, 231, 231))
         );
         pnlTopLayout.setVerticalGroup(
             pnlTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -160,9 +207,8 @@ public class PanelDiaDanh extends javax.swing.JPanel {
                 .addGap(34, 34, 34)
                 .addGroup(pnlTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbChonCot, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmbTinhThanhPho, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(38, Short.MAX_VALUE))
         );
 
@@ -233,24 +279,19 @@ public class PanelDiaDanh extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cmbChonCotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbChonCotActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cmbChonCotActionPerformed
-
     private void cmbTinhThanhPhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTinhThanhPhoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbTinhThanhPhoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> cmbChonCot;
+    private javax.swing.JButton btnThem;
     private javax.swing.JComboBox<String> cmbTinhThanhPho;
-    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
-    private PanelShadow pnlCenter;
+    private com.huyhoang.swing.panel.PanelShadow pnlCenter;
     private gui.table2.PanelPage pnlPage;
-    private PanelShadow pnlTop;
+    private com.huyhoang.swing.panel.PanelShadow pnlTop;
     private gui.table2.MyTable tblDiaDanh;
-    private MyTextField txtTimKiem;
+    private com.huyhoang.swing.textfield.MyTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
 }

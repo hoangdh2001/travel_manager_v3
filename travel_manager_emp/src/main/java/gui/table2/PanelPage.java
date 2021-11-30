@@ -11,7 +11,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.huyhoang.swing.slideshow.EventPagination;
+import com.huyhoang.swing.event.*;
 
 import net.miginfocom.swing.MigLayout;
 

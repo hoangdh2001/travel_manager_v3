@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -177,5 +178,14 @@ public class HuongDanVien implements Serializable {
         return "HuongDanVien [maHDV=" + maHDV + ", tenHDV=" + tenHDV + ", cCCD=" + cCCD + ", gioiTinh=" + gioiTinh
                 + ", ngaySinh=" + ngaySinh + ", soDienThoai=" + soDienThoai + ", email=" + email + ", phiHDV=" + phiHDV
                 + "]";
+    }
+    
+    
+    //nh
+    public Object[] convertToRowTable() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        String[] temp = ngaySinh.split("-");
+        String ns = temp[2] + "-" + temp[1] + "-" + temp[0];
+        return new Object[]{maHDV, tenHDV, gioiTinh == true ? "Nữ" : "Nam", ns, cCCD, soDienThoai, email};
     }
 }

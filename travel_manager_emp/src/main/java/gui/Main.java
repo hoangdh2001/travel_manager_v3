@@ -97,15 +97,34 @@ public class Main extends javax.swing.JFrame {
 					} catch (RemoteException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
+					} catch (MalformedURLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (NotBoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
 					}
                         content1.showForm(panelKhachHang);
                         break;
                     case 2:
-                        PanelDonDatVe panelDonDat = new PanelDonDatVe();
+					PanelDonDatVe panelDonDat = null;
+					try {
+						panelDonDat = new PanelDonDatVe();
+						
+					} catch (MalformedURLException | RemoteException | NotBoundException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
                         content1.showForm(panelDonDat);
                         break;
                     case 3:
-                        PanelHuongDanVien panelHDV = new PanelHuongDanVien();
+					PanelHuongDanVien panelHDV = null;
+					try {
+						panelHDV = new PanelHuongDanVien();
+					} catch (MalformedURLException | RemoteException | NotBoundException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
                         content1.showForm(panelHDV);
                         break;
                     case 4:
