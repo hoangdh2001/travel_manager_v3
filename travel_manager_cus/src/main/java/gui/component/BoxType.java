@@ -2,6 +2,8 @@ package gui.component;
 
 import model.LoaiChuyenDi;
 import java.awt.Color;
+import java.awt.event.MouseListener;
+
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
@@ -10,6 +12,11 @@ public class BoxType extends com.huyhoang.swing.panel.PanelTransparent {
     private boolean over;
     private Animator animator;
     private LoaiChuyenDi loaiChuyenDi;
+    
+    public void addEventBoxType(MouseListener mouseListener) {
+    	bg.addMouseListener(mouseListener);
+    }
+    
     public BoxType(LoaiChuyenDi loaiChuyenDi) {
         this.loaiChuyenDi = loaiChuyenDi;
         initComponents();
@@ -46,9 +53,17 @@ public class BoxType extends com.huyhoang.swing.panel.PanelTransparent {
         animator.setAcceleration(0.5f);
         animator.setDeceleration(0.5f);
     }
+    
+    public void refreshBox() {
+        over = false;
+        if (animator.isRunning()) {
+            animator.stop();
+        }
+        animator.start();
+    }
 
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
 
         bg = new com.huyhoang.swing.panel.LayerPaneTransparent();
@@ -103,23 +118,19 @@ public class BoxType extends com.huyhoang.swing.panel.PanelTransparent {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-    }// </editor-fold>//GEN-END:initComponents
+    }// </editor-fold>                        
 
-    private void bgMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bgMouseEntered
+    private void bgMouseEntered(java.awt.event.MouseEvent evt) {                                
         over = true;
-        if(animator.isRunning()) {
+        if (animator.isRunning()) {
             animator.stop();
         }
         animator.start();
-    }//GEN-LAST:event_bgMouseEntered
+    }                               
 
-    private void bgMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bgMouseExited
-        over= false;
-        if(animator.isRunning()) {
-            animator.stop();
-        }
-        animator.start();
-    }//GEN-LAST:event_bgMouseExited
+    private void bgMouseExited(java.awt.event.MouseEvent evt) {                               
+        refreshBox();
+    } 
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

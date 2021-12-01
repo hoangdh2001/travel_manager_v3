@@ -4,14 +4,19 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.ImageIcon;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-import net.miginfocom.swing.MigLayout;
+
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
+
+import com.huyhoang.swing.event.EventPagination;
+
+import net.miginfocom.swing.MigLayout;
 
 public class SlideShow extends JLayeredPane {
 
