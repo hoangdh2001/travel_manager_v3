@@ -35,15 +35,16 @@ public class Main extends javax.swing.JFrame {
     private Animator start;
     private Menu menu;
     
-    public Main() {
+    public Main() throws MalformedURLException, RemoteException, NotBoundException {
         initComponents();
         buildDisplay();
         resized();
     }
     
-    private void buildDisplay() {
+    private void buildDisplay() throws MalformedURLException, RemoteException, NotBoundException {
         start();
         buildMenu();
+        createContent();
     }
 
     private void buildMenu() {
@@ -146,6 +147,30 @@ public class Main extends javax.swing.JFrame {
                 }
             }
         });
+    }
+    
+    private void createContent() throws MalformedURLException, RemoteException, NotBoundException {
+    	PanelTour panelTour = new PanelTour();
+    	panelTour.btnThemHandle(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DialogTour dialogTour = null;
+				try {
+					dialogTour = new DialogTour(Main.this);
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (MalformedURLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (NotBoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+                dialogTour.setVisible(true);
+            }
+        });
+    	content1.showForm(panelTour);
     }
     
     private void start() {
@@ -270,7 +295,12 @@ public class Main extends javax.swing.JFrame {
         			System.setProperty("java.security.policy", "policy/policy.policy");
         			System.setSecurityManager(new SecurityManager());
         		}
-                new Main().setVisible(true);
+                try {
+					new Main().setVisible(true);
+				} catch (MalformedURLException | RemoteException | NotBoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
     }

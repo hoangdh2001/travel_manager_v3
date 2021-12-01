@@ -91,6 +91,7 @@ public class TourInfo extends javax.swing.JLayeredPane {
                 String diaDanh = "[";
                 String tinh = "Du lịch ";
                 String diemDen = "";
+                slide.stop();
                 List<ChiTietThamQuan> dsChiTietThamQuan = chuyenDuLich.getDsChiTietThamQuan();
                 if (dsChiTietThamQuan.size() > 0) {
                     for (int i = 0; i < dsChiTietThamQuan.size(); i++) {
@@ -105,6 +106,7 @@ public class TourInfo extends javax.swing.JLayeredPane {
                             diemDen = diemDen + dsChiTietThamQuan.get(i).getDiaDanh().getTinh() + " - ";
                         }
                     }
+                    slide.start();
                     slide.select(0);
                 }
                 tourName.setText(tinh);
@@ -118,11 +120,11 @@ public class TourInfo extends javax.swing.JLayeredPane {
                 String lblText = String.format("<html><div style=\"width:%dpx;font-size:10px;font-family:'Segoe UI', Arial, sans-serif;\">%s</div></html>", 500, chuyenDuLich.getMoTa());
                 lblDescription.setText(lblText);
                 lblthoiGian.setText("THỜI GIAN: " + getDifferenceDays(chuyenDuLich.getNgayKhoiHanh(), chuyenDuLich.getNgayKetThuc()) + " ngày");
-//                if(MainFrame.khachHang.getChuyenDiDaThich().contains(chuyenDuLich))  {
-//                    btnLike.setSelected(true);
-//                } else {
-//                    btnLike.setSelected(false);
-//                }
+                if(MainFrame.khachHang.getChuyenDiDaThich().contains(chuyenDuLich))  {
+                    btnLike.setSelected(true);
+                } else {
+                    btnLike.setSelected(false);
+                }
                 List<ChuyenDuLich> dsChuyenDuLich = null;
 				try {
 					dsChuyenDuLich = chuyenDuLich_DAO.getDsChuyenDuLichNgauNhien(chuyenDuLich.getMaChuyen());

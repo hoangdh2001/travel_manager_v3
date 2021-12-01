@@ -5,14 +5,21 @@ import dao.impl.KhachHangImpl;
 import gui.dialog.DialogBookTour;
 import gui.form.Home;
 import gui.form.Library;
+import gui.form.ResultMap;
 import gui.form.Search;
 import gui.form.TourInfo;
 import model.ChuyenDuLich;
 import model.KhachHang;
+import model.LoaiChuyenDi;
+
 import com.huyhoang.swing.event.EventMenuSelected;
 import com.huyhoang.swing.event.EventTour;
+import com.huyhoang.swing.panel.ComponentResizer;
+
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
@@ -66,6 +73,7 @@ public class MainFrame extends javax.swing.JFrame {
         btrang.setVisible(false);
         jPanel1.setVisible(true);
         buildDisplay();
+        resized();
     }
 
     private void buildDisplay() throws RemoteException, MalformedURLException, NotBoundException {
@@ -88,7 +96,6 @@ public class MainFrame extends javax.swing.JFrame {
 				try {
 					home = new Home();
 				} catch (RemoteException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
                 home.addEventTour(new EventTour() {
@@ -112,20 +119,68 @@ public class MainFrame extends javax.swing.JFrame {
                 Search search = null;
 				try {
 					search = new Search();
+					search.addEventTour(new EventTour() {
+						@Override
+						public void openTour(Object arg0) {
+							if(arg0 instanceof LoaiChuyenDi) {
+								LoaiChuyenDi loaiChuyenDi = (LoaiChuyenDi) arg0;
+								ResultMap resultMap = null;
+								try {
+									resultMap = new ResultMap(loaiChuyenDi);
+									resultMap.addEventTour(new EventTour() {
+										@Override
+										public void openTour(Object arg0) {
+											ChuyenDuLich chuyenDuLich = (ChuyenDuLich) arg0;
+											tourInfo.setChuyenDuLich(chuyenDuLich);
+											main.getContent().showForm(tourInfo);
+											menu.unSelectedAll();
+											addHistory(tourInfo);
+											try {
+			                                    write2File(chuyenDuLich);
+			                                } catch (FileNotFoundException ex) {
+			                                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+			                                }
+										}
+									});
+									
+								} catch (MalformedURLException | RemoteException | NotBoundException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+								main.getContent().showForm(resultMap);
+								menu.unSelectedAll();
+								addHistory(resultMap);
+							} else if(arg0 instanceof ChuyenDuLich) {
+								ChuyenDuLich chuyenDuLich = (ChuyenDuLich) arg0;
+	                            tourInfo.setChuyenDuLich(chuyenDuLich);
+	                            main.getContent().showForm(tourInfo);
+	                            menu.unSelectedAll();
+	                            addHistory(tourInfo);
+	                            try {
+	                                write2File(chuyenDuLich);
+	                            } catch (FileNotFoundException ex) {
+	                                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+	                            }
+							}
+						}
+					});
 				} catch (RemoteException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (MalformedURLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (NotBoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
                 main.getContent().showForm(search);
                 addHistory(search);
             } else if(index == 2) {
-                Library library = new Library();
+                Library library = null;
+				try {
+					library = new Library();
+				} catch (RemoteException | MalformedURLException | NotBoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
                 library.addEventTour(new EventTour() {
                     @Override
                     public void openTour(Object obj) {
@@ -446,6 +501,15 @@ public class MainFrame extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
+    
+    private void resized() {
+        ComponentResizer com = new ComponentResizer();
+        com.registerComponent(this);
+        com.setMaximumSize(Toolkit.getDefaultToolkit().getScreenSize());
+        com.setSnapSize(new Dimension(10, 10));
+    }
+    
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

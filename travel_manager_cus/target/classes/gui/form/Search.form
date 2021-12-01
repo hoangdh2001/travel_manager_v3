@@ -27,11 +27,8 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="map1" max="32767" attributes="0"/>
-          <Group type="102" alignment="0" attributes="0">
-              <Component id="jPanel1" min="-2" pref="648" max="-2" attributes="0"/>
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-          </Group>
+          <Component id="jPanel2" alignment="0" max="32767" attributes="0"/>
+          <Component id="jPanel1" alignment="1" min="-2" pref="648" max="-2" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -39,17 +36,12 @@
           <Group type="102" alignment="1" attributes="0">
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="map1" pref="400" max="32767" attributes="0"/>
+              <Component id="jPanel2" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="com.huyhoang.customer.gui.component.Map" name="map1">
-      <Properties>
-        <Property name="title" type="java.lang.String" value="Duy&#xea;&#x323;t ti&#x300;m t&#xe2;&#x301;t ca&#x309;"/>
-      </Properties>
-    </Component>
     <Container class="javax.swing.JPanel" name="jPanel1">
       <Properties>
         <Property name="opaque" type="boolean" value="false"/>
@@ -58,22 +50,25 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Group type="102" attributes="0">
-                          <Component id="panelRoundLine3" max="32767" attributes="0"/>
+              <Group type="102" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="panelRoundLine3" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="panelRoundLine4" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="button1" max="32767" attributes="0"/>
                       </Group>
-                      <Group type="102" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
                           <Component id="panelRoundLine1" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="panelRoundLine2" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -91,17 +86,23 @@
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Component id="panelRoundLine3" min="-2" max="-2" attributes="0"/>
-                      <Component id="panelRoundLine4" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Component id="panelRoundLine3" min="-2" max="-2" attributes="0"/>
+                              <Component id="panelRoundLine4" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Component id="button1" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Container class="com.huyhoang.swing.panel.PanelRoundLine" name="panelRoundLine1">
+        <Container class="com.hoanghung.swing.panel.PanelRoundLine" name="panelRoundLine1">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -142,7 +143,7 @@
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="com.huyhoang.swing.combobox.Combobox" name="cmbDiemDi">
+            <Component class="com.hoanghung.swing.combobox.Combobox" name="cmbDiemDi">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                   <StringArray count="3">
@@ -169,7 +170,7 @@
             </Component>
           </SubComponents>
         </Container>
-        <Container class="com.huyhoang.swing.panel.PanelRoundLine" name="panelRoundLine2">
+        <Container class="com.hoanghung.swing.panel.PanelRoundLine" name="panelRoundLine2">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -208,7 +209,7 @@
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="com.huyhoang.swing.combobox.Combobox" name="cmbDiemDen">
+            <Component class="com.hoanghung.swing.combobox.Combobox" name="cmbDiemDen">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                   <StringArray count="1">
@@ -241,7 +242,7 @@
             </Property>
           </Properties>
         </Component>
-        <Container class="com.huyhoang.swing.panel.PanelRoundLine" name="panelRoundLine3">
+        <Container class="com.hoanghung.swing.panel.PanelRoundLine" name="panelRoundLine3">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -262,11 +263,11 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="cmbNgay" min="-2" max="-2" attributes="0"/>
+                      <Component id="cmbNgay" min="-2" pref="114" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="cmbThang" min="-2" max="-2" attributes="0"/>
+                      <Component id="cmbThang" min="-2" pref="134" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="cmbNam" min="-2" max="-2" attributes="0"/>
+                      <Component id="cmbNam" min="-2" pref="117" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -298,7 +299,7 @@
                 </Property>
               </Properties>
             </Component>
-            <Component class="com.huyhoang.swing.combobox.Combobox" name="cmbNgay">
+            <Component class="com.hoanghung.swing.combobox.Combobox" name="cmbNgay">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                   <StringArray count="0"/>
@@ -309,7 +310,7 @@
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Integer&gt;"/>
               </AuxValues>
             </Component>
-            <Component class="com.huyhoang.swing.combobox.Combobox" name="cmbThang">
+            <Component class="com.hoanghung.swing.combobox.Combobox" name="cmbThang">
               <Properties>
                 <Property name="labeText" type="java.lang.String" value="Tha&#x301;ng"/>
               </Properties>
@@ -317,7 +318,7 @@
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Integer&gt;"/>
               </AuxValues>
             </Component>
-            <Component class="com.huyhoang.swing.combobox.Combobox" name="cmbNam">
+            <Component class="com.hoanghung.swing.combobox.Combobox" name="cmbNam">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                   <StringArray count="2">
@@ -333,7 +334,7 @@
             </Component>
           </SubComponents>
         </Container>
-        <Container class="com.huyhoang.swing.panel.PanelRoundLine" name="panelRoundLine4">
+        <Container class="com.hoanghung.swing.panel.PanelRoundLine" name="panelRoundLine4">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -382,7 +383,7 @@
                 </Property>
               </Properties>
             </Component>
-            <Component class="com.huyhoang.swing.combobox.Combobox" name="cmbSoNgay">
+            <Component class="com.hoanghung.swing.combobox.Combobox" name="cmbSoNgay">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                   <StringArray count="4">
@@ -393,6 +394,74 @@
                   </StringArray>
                 </Property>
                 <Property name="labeText" type="java.lang.String" value="S&#xf4;&#x301; nga&#x300;y"/>
+              </Properties>
+            </Component>
+          </SubComponents>
+        </Container>
+        <Component class="com.hoanghung.swing.button.Button" name="button1">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="28" green="28" red="28" type="rgb"/>
+            </Property>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/icon/search_enter.png"/>
+            </Property>
+            <Property name="borderRadius" type="int" value="20"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Container class="javax.swing.JPanel" name="jPanel2">
+      <Properties>
+        <Property name="opaque" type="boolean" value="false"/>
+      </Properties>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignCardLayout"/>
+      <SubComponents>
+        <Component class="com.hoanghung.customer.gui.component.Map" name="mapLoaiChuyen">
+          <Properties>
+            <Property name="title" type="java.lang.String" value="Duy&#xea;&#x323;t ti&#x300;m t&#xe2;&#x301;t ca&#x309;"/>
+          </Properties>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
+              <CardConstraints cardName="card2"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Container class="javax.swing.JPanel" name="result">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
+              <CardConstraints cardName="card3"/>
+            </Constraint>
+          </Constraints>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Component id="boxWidth1" min="-2" pref="489" max="-2" attributes="0"/>
+                      <EmptySpace pref="159" max="32767" attributes="0"/>
+                  </Group>
+                  <Component id="map1" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                      <Component id="boxWidth1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="map1" pref="282" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Component class="com.hoanghung.customer.gui.component.BoxWidth" name="boxWidth1">
+            </Component>
+            <Component class="com.hoanghung.customer.gui.component.Map" name="map1">
+              <Properties>
+                <Property name="title" type="java.lang.String" value="K&#xea;&#x301;t qua&#x309; ha&#x300;ng &#x111;&#xe2;&#x300;u"/>
               </Properties>
             </Component>
           </SubComponents>

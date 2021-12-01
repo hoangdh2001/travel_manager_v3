@@ -1,18 +1,28 @@
 package com.huyhoang.swing.slideshow;
 
+<<<<<<< HEAD
 import com.huyhoang.swing.event.EventPagination;
 import com.huyhoang.swing.image.PictureBox;
 import com.huyhoang.swing.panel.PanelTransparent;
+=======
+>>>>>>> master
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JLayeredPane;
 import javax.swing.Timer;
-import net.miginfocom.swing.MigLayout;
+
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
+
+import com.huyhoang.swing.event.EventPagination;
+import com.huyhoang.swing.image.PictureBox;
+import com.huyhoang.swing.panel.PanelTransparent;
+
+import net.miginfocom.swing.MigLayout;
 
 public class SlideShowTransparent extends JLayeredPane {
 
