@@ -5,6 +5,7 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 import model.ChuyenDuLich;
+import model.KhachHang;
 import model.LoaiChuyenDi;
 import model.PhuongTien;
 import model.TrangThaiChuyenDi;
@@ -19,7 +20,10 @@ public interface ChuyenDuLich_DAO extends Remote {
     public List<ChuyenDuLich> getDsChuyenDuLichMoi() throws RemoteException;
     public List<ChuyenDuLich> getDsChuyenDuLichNhieuDonDatNhat() throws RemoteException;
     public List<ChuyenDuLich> getDsChuyenDuLichNgauNhien(String maChuyen) throws RemoteException;
-    
+    public List<ChuyenDuLich> getDsChuyenDuLichByLoaiChuyen(LoaiChuyenDi loaiChuyenDi) throws RemoteException ;
+    public List<ChuyenDuLich> searchChuyenDuLich(String diaChi, String tinh, String ngayKhoiHanh, int startDay, int endDay) throws RemoteException ;
+    public List<ChuyenDuLich> getDsChuyenDuLichDaDat(KhachHang khachHang) throws RemoteException ;
+    	
     //nh
     public List<ChuyenDuLich> getChuyenDuLichs() throws RemoteException;
     public List<ChuyenDuLich> getChuyenDuLich(int numPage) throws RemoteException;
